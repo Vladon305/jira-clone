@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { PrismaService } from 'src/prisma.service';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -31,10 +32,40 @@ export class TasksService {
   }
 
   update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+    return this.prisma.task.update({
+      where: { id },
+      data: {
+        name: updateTaskDto.name,
+        description: updateTaskDto.description,
+        assignedTo: {
+          connect: {
+            id: updateTaskDto.assignedToId,
+          },
+        },
+        project: {
+          connect: {
+            id: updateTaskDto.projectId,
+          },
+        },
+        status: updateTaskDto.status,
+      },
+    });
   }
 
-  updateTaskStatus(id: number, updateTaskDto: UpdateTaskDto) {
+  updateTaskAssign(id: number, assignUserId: number) {
+    return this.prisma.task.update({
+      where: { id },
+      data: {
+        assignedTo: {
+          connect: {
+            id: assignUserId,
+          },
+        },
+      },
+    });
+  }
+
+  updateTaskStatus(id: number, updateTaskDto: UpdateTaskStatusDto) {
     return this.prisma.task.update({
       where: { id },
       data: { status: updateTaskDto.status },

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -16,16 +17,18 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  create(
+  async create(
     @Body() createProjectDto: CreateProjectDto,
-    @Param('userId') userId: string,
+    @Query('userId') userId?: string,
   ) {
+    console.log(userId);
+
     return this.projectsService.create(createProjectDto, +userId);
   }
 
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  findAll(@Query('userId') userId?: string) {
+    return this.projectsService.findAll(+userId);
   }
 
   @Get(':id')

@@ -7,5 +7,7 @@ declare enum TaskStatus {
 declare const UpdateTaskDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateTaskDto>>;
 export declare class UpdateTaskDto extends UpdateTaskDto_base {
     status: TaskStatus;
+    assignedToId: number;
+    projectId: number;
 }
 export {};

@@ -37,7 +37,36 @@ let TasksService = class TasksService {
         });
     }
     update(id, updateTaskDto) {
-        return `This action updates a #${id} task`;
+        return this.prisma.task.update({
+            where: { id },
+            data: {
+                name: updateTaskDto.name,
+                description: updateTaskDto.description,
+                assignedTo: {
+                    connect: {
+                        id: updateTaskDto.assignedToId,
+                    },
+                },
+                project: {
+                    connect: {
+                        id: updateTaskDto.projectId,
+                    },
+                },
+                status: updateTaskDto.status,
+            },
+        });
+    }
+    updateTaskAssign(id, assignUserId) {
+        return this.prisma.task.update({
+            where: { id },
+            data: {
+                assignedTo: {
+                    connect: {
+                        id: assignUserId,
+                    },
+                },
+            },
+        });
     }
     updateTaskStatus(id, updateTaskDto) {
         return this.prisma.task.update({

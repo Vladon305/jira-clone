@@ -21,11 +21,12 @@ let ProjectsController = class ProjectsController {
     constructor(projectsService) {
         this.projectsService = projectsService;
     }
-    create(createProjectDto, userId) {
+    async create(createProjectDto, userId) {
+        console.log(userId);
         return this.projectsService.create(createProjectDto, +userId);
     }
-    findAll() {
-        return this.projectsService.findAll();
+    findAll(userId) {
+        return this.projectsService.findAll(+userId);
     }
     findOne(id) {
         return this.projectsService.findOne(+id);
@@ -41,15 +42,16 @@ exports.ProjectsController = ProjectsController;
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Query)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_project_dto_1.CreateProjectDto, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProjectsController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "findAll", null);
 __decorate([

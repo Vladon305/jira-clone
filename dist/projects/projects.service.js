@@ -26,14 +26,16 @@ let ProjectsService = class ProjectsService {
             },
         });
     }
-    findAll() {
+    findAll(userId) {
         return this.prisma.project.findMany({
+            where: { createdById: userId },
             include: { tasks: true, createdBy: true },
         });
     }
     findOne(id) {
         return this.prisma.project.findUnique({
             where: { id },
+            include: { tasks: true, createdBy: true },
         });
     }
     update(id, updateProjectDto) {
@@ -42,7 +44,10 @@ let ProjectsService = class ProjectsService {
             data: updateProjectDto,
         });
     }
-    remove(id) {
+    async remove(id) {
+        await this.prisma.task.deleteMany({
+            where: { projectId: id },
+        });
         return this.prisma.project.delete({
             where: { id },
         });

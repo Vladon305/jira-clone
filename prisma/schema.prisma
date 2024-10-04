@@ -33,7 +33,7 @@ model Project {
 
 model Task {
   id           Int        @id @default(autoincrement())
-  title        String
+  name         String
   description  String
   status       TaskStatus @default(PENDING)
   project      Project    @relation(fields: [projectId], references: [id])

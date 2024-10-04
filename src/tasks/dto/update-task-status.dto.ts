@@ -7,8 +7,6 @@ enum TaskStatus {
   COMPLETED = 'COMPLETED',
 }
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+export class UpdateTaskStatusDto extends PartialType(CreateTaskDto) {
   status: TaskStatus;
-  assignedToId: number;
-  projectId: number;
 }

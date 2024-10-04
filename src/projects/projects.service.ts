@@ -18,8 +18,9 @@ export class ProjectsService {
     });
   }
 
-  findAll() {
+  findAll(userId: number) {
     return this.prisma.project.findMany({
+      where: { createdById: userId },
       include: { tasks: true, createdBy: true },
     });
   }
@@ -27,6 +28,7 @@ export class ProjectsService {
   findOne(id: number) {
     return this.prisma.project.findUnique({
       where: { id },
+      include: { tasks: true, createdBy: true },
     });
   }
 
@@ -37,7 +39,10 @@ export class ProjectsService {
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.prisma.task.deleteMany({
+      where: { projectId: id },
+    });
     return this.prisma.project.delete({
       where: { id },
     });
